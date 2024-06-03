@@ -80,6 +80,10 @@ bool Pawn::isEnPassantPossible(std::pair<int, int> starting_position, std::pair<
 
 	int direction = this->getColor() == WHITE ? 1 : -1;
 
+	if (Game::getRounds().empty()) {
+		return false;
+	}
+
 	Round *lastRound = Game::getRounds().back();
 
 	std::pair<int, int> firstMove, lastMove;

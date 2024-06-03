@@ -6,8 +6,30 @@
 int main() {
     bool controller = false;
     bool hasGameStarted = false;
+    Color color = WHITE;
+    Color color2 = BLACK;
     Game game; 
     while (!controller) {
+
+        if (hasGameStarted) {
+            if (game.isCheckmate(&color)) {
+                std::cout << "Game over. Black won." << std::endl;
+                controller = true;
+                break;
+            }
+            else if (game.isCheckmate(&color2)) {
+                std::cout << "Game over. White won." << std::endl;
+                controller = true;
+                break;
+            }
+
+            if (game.isStalemate(&color) || game.isStalemate(&color2)) {
+                std::cout << "Game over. Stalemate." << std::endl;
+                controller = true;
+                break;
+            }
+        }
+
         std::cout << "Enter command (N to start new game, M to make move, U to undo move, S to save game, L to load game, Q to exit): ";
         char command;
         std::cin >> command;
