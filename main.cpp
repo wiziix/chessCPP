@@ -10,7 +10,11 @@ int main() {
     Color color2 = BLACK;
     Game game; 
     while (!controller) {
-        
+        if (game.getGameState() == false) {
+            controller = true;
+            break;
+        }
+
         std::cout << "Enter command (N to start new game, M to make move, U to undo move, S to save game, L to load game, Q to exit): ";
         char command;
         std::cin >> command;

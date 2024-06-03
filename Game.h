@@ -31,6 +31,8 @@ public:
 	static std::deque<Round*> getRounds();
 	bool canPromotePawn(std::pair<int, int> end);
 	void checkGameState(Color *color);
+	void setGameState(bool game);
+	bool getGameState();
 private:
 	static std::deque<Round*> rounds;
 	Board *board;
@@ -38,5 +40,6 @@ private:
 	Player* p1;
 	Player* p2;
 	bool isWhiteTurn = true;
+	bool gameState = true;
 };
 #endif

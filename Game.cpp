@@ -408,11 +408,21 @@ bool Game::canPromotePawn(std::pair<int, int> end) {
 	return false;
 }
 
+void Game::setGameState(bool state) {
+	gameState = state;
+}
+
+bool Game::getGameState() {
+	return gameState;
+}
+
 void Game::checkGameState(Color *color) {
 	if (isCheckmate(color)) {
 		std::cout << "Checkmate! " << (isWhiteTurn ? p2->getName() : p1->getName()) << " wins!" << std::endl;
+		setGameState(false);
 	}
 	else if (isStalemate(color)) {
 		std::cout << "Stalemate! The game is a draw." << std::endl;
+		setGameState(false);
 	}
 }
