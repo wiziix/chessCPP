@@ -30,6 +30,7 @@ public:
 	bool isCastlingPossible(std::pair<int, int> start, std::pair<int, int> end);
 	static std::deque<Round*> getRounds();
 	bool canPromotePawn(std::pair<int, int> end);
+	void checkGameState(Color *color);
 private:
 	static std::deque<Round*> rounds;
 	Board *board;

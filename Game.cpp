@@ -28,6 +28,7 @@ void Game::startNewGame(std::string p1_name, std::string p2_name) {
 }
 
 void Game::makeMove() {
+
 	int firstMove[2], lastMove[2];
 	std::string start_move, ending_move;
 	std::regex reg("^[a-h][1-8]$");
@@ -79,6 +80,9 @@ void Game::makeMove() {
 
 						std::cout << "Player " << (isWhiteTurn ? p1->getName() : p2->getName()) << "'s turn" << std::endl;
 						board->printBoard(isWhiteTurn);
+
+						checkGameState(&turn);
+
 						return;
 					}
 				}
@@ -128,6 +132,8 @@ void Game::makeMove() {
 
 				std::cout << "Player " << (isWhiteTurn ? p1->getName() : p2->getName()) << "'s turn" << std::endl;
 				board->printBoard(isWhiteTurn);
+
+				checkGameState(&turn);
 			}
 			else {
 				std::cout << "Invalid move!" << std::endl;
@@ -218,7 +224,6 @@ bool Game::isKingChecked(Color* kingColor) {
 bool Game::isStalemate(Color *color) {
 	// Check if the king is in check
 	if (isKingChecked(color)) {
-		std::cout << "CHECKED" << std::endl;
 		return false;
 	}
 
@@ -233,7 +238,6 @@ bool Game::isStalemate(Color *color) {
 						std::pair<int, int> newPosition = std::make_pair(k, l);
 						if (piece->isMovePossible(piecePosition, newPosition, *board) &&
 							board->isPathClear(piecePosition, newPosition)) {
-							std::cout << "move possible" << std::endl;
 							// Simulate the move
 							board->movePiece(piecePosition, newPosition);
 
@@ -244,10 +248,6 @@ bool Game::isStalemate(Color *color) {
 
 							// If the move does not leave the king in check, it's not a stalemate
 							if (!isStillChecked) {
-								board->movePiece(piecePosition, newPosition);
-								board->printBoard(true);
-								board->undoMove(piecePosition, newPosition);
-								std::cout << piece->getSymbol() << std::endl;
 								return false;
 							}
 						}
@@ -287,11 +287,13 @@ bool Game::isCheckmate(Color* color) {
 							// Check if the move gets the king out of check
 							board->movePiece(piecePosition, newPosition);
 
+							board->undoMove(piecePosition, newPosition);
+
+
 							if (!isKingChecked(color)) {
 								return false;
 							}
-
-							board->undoMove(piecePosition, newPosition);
+							
 						}
 					}
 				}
@@ -404,4 +406,13 @@ bool Game::canPromotePawn(std::pair<int, int> end) {
 	}
 
 	return false;
+}
+
+void Game::checkGameState(Color *color) {
+	if (isCheckmate(color)) {
+		std::cout << "Checkmate! " << (isWhiteTurn ? p2->getName() : p1->getName()) << " wins!" << std::endl;
+	}
+	else if (isStalemate(color)) {
+		std::cout << "Stalemate! The game is a draw." << std::endl;
+	}
 }
